@@ -1,0 +1,51 @@
+---
+#
+# Nuage Authentication
+#
+- name: "Obtain username"
+  manageiq_automate:
+    workspace: "{{ workspace }}"
+    get_attribute:
+      object: "{{ object }}"
+      attribute: nuage_username
+  register: nuage_username
+
+- name: "Obtain password"
+  manageiq_automate:
+    workspace: "{{ workspace }}"
+    get_decrypted_attribute:
+      object: "{{ object }}"
+      attribute: nuage_password
+  register: nuage_password
+
+- name: "Obtain enterprise"
+  manageiq_automate:
+    workspace: "{{ workspace }}"
+    get_decrypted_attribute:
+      object: "{{ object }}"
+      attribute: nuage_enterprise
+  register: nuage_enterprise
+
+- name: "Obtain url"
+  manageiq_automate:
+    workspace: "{{ workspace }}"
+    get_decrypted_attribute:
+      object: "{{ object }}"
+      attribute: nuage_url
+  register: nuage_url
+
+- name: "Obtain version"
+  manageiq_automate:
+    workspace: "{{ workspace }}"
+    get_decrypted_attribute:
+      object: "{{ object }}"
+      attribute: nuage_version
+  register: nuage_version
+
+- set_fact:
+    nuage_auth:
+      api_username: "{{ nuage_username.value }}"
+      api_password: "{{ nuage_password.value.value }}"
+      api_enterprise: "{{ nuage_enterprise.value.value }}"
+      api_url: "{{ nuage_url.value }}"
+      api_version: "{{ nuage_version.value }}"

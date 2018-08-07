@@ -1,0 +1,19 @@
+---
+#
+# Nuage Event Data
+#
+- name: "Obtain event full data"
+  manageiq_automate:
+    workspace: "{{ workspace }}"
+    get_vmdb_object:
+      object: root
+      attribute: event_stream
+  register: stream
+
+- set_fact:
+    event:
+      type: "{{ stream.value.full_data.type }}"
+      ems_id: "{{ stream.value.ems_id }}"
+      entity_type: "{{ stream.value.full_data.entityType }}"
+      full_data: "{{ stream.value.full_data }}"
+      entity: "{{ stream.value.full_data.entities[0] }}"

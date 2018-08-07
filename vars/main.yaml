@@ -1,0 +1,7 @@
+nuage_auth: {}
+event: {}
+
+# Full path of the current Automate Instance.
+object: "/{{ workspace.workspace.input.current.namespace }}\
+  /{{ workspace.workspace.input.current.class }}\
+  /{{ workspace.workspace.input.current.instance }}"
