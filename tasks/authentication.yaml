@@ -39,8 +39,8 @@
     workspace: "{{ workspace }}"
     get_attribute:
       object: "{{ object }}"
-      attribute: nuage_version
-  register: nuage_version
+      attribute: nuage_api_version
+  register: nuage_api_version
 
 - set_fact:
     nuage_auth:
@@ -48,4 +48,4 @@
       api_password: "{{ nuage_password.value.value }}"
       api_enterprise: "{{ nuage_enterprise.value }}"
       api_url: "{{ nuage_url.value }}"
-      api_version: "{{ nuage_version.value }}"
+      api_version: "{{ nuage_api_version.value }}"
