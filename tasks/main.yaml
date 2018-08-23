@@ -4,4 +4,6 @@
 #
 - include: authentication-check.yaml
 - include: authentication.yaml
+- include: event-check.yaml
 - include: event.yaml
+  when: check_event.value
