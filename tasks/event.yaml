@@ -2,7 +2,7 @@
 #
 # Nuage Event Data
 #
-- name: "Obtain event full data"
+- name: "Obtain EMS event"
   manageiq_automate:
     workspace: "{{ workspace }}"
     get_vmdb_object:
@@ -10,7 +10,8 @@
       attribute: event_stream
   register: stream
 
-- set_fact:
+- name: "Parse event full data"
+  set_fact:
     event:
       type: "{{ stream.value.full_data.type }}"
       ems_id: "{{ stream.value.ems_id }}"
