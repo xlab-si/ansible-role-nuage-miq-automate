@@ -1,24 +1,88 @@
 Ansible Role: nuage_miq_automate
 =========
 
-This role accesses ManageIQ Automation Workspace for you to provide you with:
+This role accesses ManageIQ Automation Workspace for you to provide you with
+Nuage credentials (variable `nuage_auth`) and EMS event data (variable `event`).
 
-- Nuage credentials
-- EMS event data
+- **Nuage credentials**. Format is exactly as required by
+[Nuage Ansible module](https://docs.ansible.com/ansible/latest/modules/nuage_vspk_module.html#parameters)
+so you can use it directly:
+```yaml
+nuage_auth:
+  api_username: user
+  api_password: pass
+  api_enterprise: csp
+  api_url: https://nuagedemo.net:8443
+  api_version: v5_0
+```
+
+- **EMS event data**. This is where you access event details and use them for
+whatever callback you want to run.
+```yaml
+event:
+  #
+  # EMS id that event was emitted for.
+  #
+  ems_id: '2'
+  #
+  # Event type (same as `full_data.type`).
+  #
+  type: CREATE
+  #
+  # Type of entity that event was raised for (same as `full_data.entityType`).
+  #
+  entityType: enterprise
+  #
+  # Entity that event was raised for (same as `full_data.entities[0]`).
+  # 
+  entity:
+    entity_type: enterprise
+    ID: 07f2726a-7f83-4826-87bd-7f7664803938
+    name: DEMO3
+    # ... and other attributes
+  #
+  # Entire event hash as received from Nuage server.
+  #
+  full_data:
+    assoicatedEvent: false
+    diffMap: 
+    enterpriseName: csp
+    entities:
+    - entityType: enterprise
+      ID: 07f2726a-7f83-4826-87bd-7f7664803938
+      name: DEMO3
+      # ...
+    entityType: enterprise
+    entityVersion: 
+    eventReceivedTime: 1535011120658
+    ignoreDiffInMediationEvents: false
+    requestID: 62c58aa6-4150-46c7-95fe-ed4051e70864
+    sourceEnterpriseID: 07f2726a-7f83-4826-87bd-7f7664803938
+    type: CREATE
+    updateMechanism: DEFAULT
+    userName: xlab
+```
 
 Requirements
 ------------
 
-You need to have following Automate Instance Attributes assigned to your instance:
+You need to have following Attributes defined on your Automate Instance which is
+running nuage_miq_automate role:
 
-- nuage_username
-- nuage_password (encrypted)
-- nuage_enterprise
-- nuage_url
-- nuage_api_version
+- `nuage_username` e.g. *user*
+- `nuage_password` (encrypted) e.g. *pass*
+- `nuage_enterprise` e.g. *csp*
+- `nuage_url` e.g. *ht<span>tps://nuagedemo.net:8443*
+- `nuage_api_version` e.g. *v5_0*
 
-If you don't specify those, the role will still work, but `nuage_auth` output will
-contain empty strings.
+![](docs/instance_attributes.png "Instance Attributes")
+
+Main purpose of this role is to extract these Attributes out of Automation Workspace.
+
+*NOTE: You don't really need to specify the five Attributes on every Automate Instance.
+Instead, you can just modify Schema and set **default values** there -
+then all Instances of a Class will be able to access them. This way, should your
+credentials change, you will only need to update those default values.*
 
 Role Variables
 --------------
