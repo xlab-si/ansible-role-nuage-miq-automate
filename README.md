@@ -140,10 +140,11 @@ This role requires following roles that are also available on Ansible Galaxy:
 Example Playbook
 ----------------
 
-Example where we create Enterprise with name `DEMO`:
+Suppose we want to create a DomainTemplate everytime a new Enterprise is created.
+We simply need to hook such playbook:
 
 ```yaml
-- name: Nuage event callback
+- name: Nuage event callback example
   hosts: localhost
   connection: local
   gather_facts: False
@@ -155,7 +156,20 @@ Example where we create Enterprise with name `DEMO`:
   - debug: msg="As well as details of the event that triggered me"
   - debug: var=event
   - debug: msg="So I'm now ready to do some work!"
+  
+  - name: Create Domain Template on Enterprise
+    delegate_to: localhost
+    nuage_vspk:
+      auth: "{{ nuage_auth }}"          # notice how we just pass forward the `nuage_auth`
+      type: DomainTemplate
+      parentType: Enterprise
+      parentId: "{{ event.entity.ID }}" # notice how we just access the `event` variable
+      state: present
+      properties:
+        name: "Demo Domain Template"
 ```
+
+to the `nuage_enterprise_create` event. Tadaaa :)
 
 License
 -------
