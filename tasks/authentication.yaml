@@ -49,3 +49,12 @@
       api_enterprise: "{{ nuage_enterprise.value }}"
       api_url: "{{ nuage_url.value }}"
       api_version: "{{ nuage_api_version.value }}"
+
+- name: "Report credentials"
+  debug:
+    msg:
+      - "Using username: {{ nuage_auth.api_username }}"
+      - "Using pasword: ********"
+      - "Using enterprise: {{ nuage_auth.api_enterprise }}"
+      - "Using URL: {{ nuage_auth.api_url }}"
+      - "Using API version: {{ nuage_auth.api_version }}"
