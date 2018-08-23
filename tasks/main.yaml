@@ -2,5 +2,6 @@
 #
 # Sets nuage_auth variable
 #
+- include: authentication-check.yaml
 - include: authentication.yaml
 - include: event.yaml

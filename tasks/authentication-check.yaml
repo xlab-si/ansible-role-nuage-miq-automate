@@ -1,0 +1,49 @@
+---
+#
+# Check whether Nuage authentication Attributes are present and are non-empty.
+#
+
+# TODO(miha-plesko): attribute_exists module seems to not work for encrypted parameters.
+# So we simply skip check for nuage_password currently...
+
+- name: "Check username"
+  manageiq_automate:
+    workspace: "{{ workspace }}"
+    attribute_exists:
+      object: "{{ object }}"
+      attribute: nuage_username
+  register: check_nuage_username
+
+- name: "Check enterprise"
+  manageiq_automate:
+    workspace: "{{ workspace }}"
+    attribute_exists:
+      object: "{{ object }}"
+      attribute: nuage_enterprise
+  register: check_nuage_enterprise
+
+- name: "Check url"
+  manageiq_automate:
+    workspace: "{{ workspace }}"
+    attribute_exists:
+      object: "{{ object }}"
+      attribute: nuage_url
+  register: check_nuage_url
+
+- name: "Check version"
+  manageiq_automate:
+    workspace: "{{ workspace }}"
+    attribute_exists:
+      object: "{{ object }}"
+      attribute: nuage_api_version
+  register: check_nuage_api_version
+
+- assert:
+    that:
+    - check_nuage_username.value
+    - check_nuage_enterprise.value
+    - check_nuage_url.value
+    - check_nuage_api_version.value
+    msg: >
+      At least one authentication attribute is missing on Nuage Automate Class!
+      See https://github.com/xlab-si/ansible-role-nuage-miq-automate#requirements
