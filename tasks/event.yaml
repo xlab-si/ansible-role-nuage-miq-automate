@@ -13,8 +13,21 @@
 - name: "Parse event full data"
   set_fact:
     event:
-      type: "{{ stream.value.full_data.type }}"
       ems_id: "{{ stream.value.ems_id }}"
-      entity_type: "{{ stream.value.full_data.entityType }}"
       full_data: "{{ stream.value.full_data }}"
-      entity: "{{ stream.value.full_data.entities[0] }}"
+      type:
+      entity_type:
+      entity:
+
+- block:
+  - set_fact:
+      event: '{{ event | combine({"type": event.full_data.type}) }}'
+    when: event.full_data.type is defined
+  - set_fact:
+      event: '{{ event | combine({"entity_type": event.full_data.entityType}) }}'
+      when: event.full_data.entityType is defined
+  - set_fact:
+      event: '{{ event | combine({"entity": event.full_data.entities[0]}) }}'
+      when: event.full_data.entities is defined and event.full_data.entities|length>0
+  when: event.full_data is defined
+
