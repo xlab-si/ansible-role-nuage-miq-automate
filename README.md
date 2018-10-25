@@ -63,6 +63,11 @@ event:
     userName: xlab
 ```
 
+Please see this [blogpost](https://tech.xlab.si/posts/nuage-ansible-in-automate/) to better
+understand what the role is supposed to do. There is also a
+[YouTube video](https://www.youtube.com/watch?v=YeXtnjTY67s) with a full demonstration
+of its usage.
+
 Requirements
 ------------
 
